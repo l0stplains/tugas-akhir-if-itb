@@ -22,6 +22,20 @@ Install TeX Live (or MiKTeX on Windows), the template's required packages,
 and `latexmk`. See [the original template documentation](TEMPLATE-README.md)
 for installation details.
 
+On Arch Linux, install the tools and packages used by this template:
+
+```sh
+sudo pacman -Syu --needed texlive-binextra texlive-latexextra \
+    texlive-fontsrecommended texlive-bibtexextra texlive-langother
+```
+
+`texlive-binextra` supplies `latexmk`. The other packages supply the LaTeX
+packages, fonts, bibliography styles, and Indonesian language support.
+This command also refreshes the package databases and upgrades installed
+system packages, following Arch's supported full-upgrade procedure.
+See the [Arch package list](https://archlinux.org/groups/x86_64/texlive/)
+and [language packages](https://archlinux.org/groups/x86_64/texlive-lang/).
+
 From this directory:
 
 ```sh
@@ -39,12 +53,15 @@ If removing sample resources, also update the resource checks in
 ## Repository
 
 This repository keeps the template's Git history. The `upstream` remote points
-to the original template; `origin` is reserved for my own repository.
+to the original template; `origin` points to
+[l0stplains/tugas-akhir-if-itb](https://github.com/l0stplains/tugas-akhir-if-itb).
 
-To create a private GitHub repository after authenticating with `gh`:
+To save and push changes from this directory:
 
 ```sh
-gh repo create tugasakhir --private --source=. --remote=origin --push
+git add src/
+git commit -m "Update thesis"
+git push
 ```
 
 ## Template credits
