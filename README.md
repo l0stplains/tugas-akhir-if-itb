@@ -1,4 +1,4 @@
-# Tugas Akhir
+# Analisis Dampak Perubahan pada Evolusi Perangkat Lunak melalui Integrasi Analisis Statis dan *Large Language Model* (tentatif)
 
 Tugas Akhir - Institut Teknologi Bandung\
 Program Studi Teknik Informatika
@@ -17,8 +17,6 @@ Program Studi Teknik Informatika
 ### Temuan Utama
 
 ## Implementasi
-
-### Fitur Sistem
 
 ### Batasan Implementasi
 
