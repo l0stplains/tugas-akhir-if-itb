@@ -1,4 +1,4 @@
-# Analisis Dampak Perubahan pada Evolusi Perangkat Lunak melalui Integrasi Analisis Statis dan *Large Language Model* (tentatif)
+# Analisis Dampak Perubahan Kode dan Kompatibilitas Perangkat Lunak melalui Integrasi Analisis Statis dan *Large Language Model* (tentatif)
 
 Tugas Akhir - Institut Teknologi Bandung\
 Program Studi Teknik Informatika
