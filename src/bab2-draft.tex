@@ -1,0 +1,32 @@
+% Draf untuk peninjauan BAB II: sampul, daftar, naskah, dan pustaka.
+\documentclass[12pt,a4paper,onecolumn,oneside,final]{report}
+
+\input{config/if-itb-thesis.sty}
+\input{config/thesis-metadata}
+\bibliography{references}
+
+% Beri ruang untuk nomor gambar yang memuat bab dan subbab (II.2.1).
+\makeatletter
+\renewcommand*{\l@figure}{\@dottedtocline{1}{1.5em}{3.5em}}
+\makeatother
+
+\begin{document}
+    \pagenumbering{gobble}
+    \input{chapters/cover}
+
+    \pagestyle{plain}
+    \pagenumbering{roman}
+    \tableofcontents
+    \clearpage
+    \listoffigures
+    \clearpage
+
+    \pagenumbering{arabic}
+    \renewcommand{\chaptername}{BAB}
+    \renewcommand{\thechapter}{\Roman{chapter}}
+    \setcounter{chapter}{1}
+    \titleformat*{\section}{\bfseries\Large}
+    \input{chapters/chapter-2}
+
+    \printbibliography[heading=bibintoc]
+\end{document}
