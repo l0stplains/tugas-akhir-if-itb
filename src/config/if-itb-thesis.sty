@@ -2,7 +2,7 @@
 %
 % Konfigurasi dokumen LaTeX untuk laporan tesis IF ITB
 %
-% @author Petra Novandi
+% @author Refki Alfarizi
 %
 %-------------------------------------------------------------------%
 %
@@ -21,20 +21,41 @@
 % Judul bahasa Indonesia
 \usepackage[bahasa]{babel}
 
-% Format citation
-\usepackage[backend=bibtex,citestyle=authoryear]{biblatex}
-
 \usepackage[utf8]{inputenc}
+\usepackage[autostyle=false,style=english]{csquotes}
+
+% Sitasi dan daftar pustaka menggunakan format penulis-tahun.
+% Biblatex belum menyediakan bahasa.lbx; gunakan format dasar English
+% dengan terjemahan istilah bibliografi yang dipakai dalam naskah.
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\DeclareLanguageMapping{bahasa}{english}
+\DefineBibliographyStrings{bahasa}{
+  and = {dan},
+  andothers = {dkk\adddot},
+  in = {Dalam},
+  page = {hlm\adddot},
+  pages = {hlm\adddot},
+  urlseen = {diakses pada},
+  phdthesis = {Disertasi doktor},
+  bibliography = {Daftar Pustaka},
+  references = {Daftar Pustaka}
+}
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+\usepackage{xurl}
+\usepackage{array}
 \usepackage{graphicx}
+\usepackage{flafter}
+\usepackage{caption}
+\captionsetup[figure]{labelsep=space,justification=centering}
 \usepackage{titling}
 \usepackage{blindtext}
 \usepackage{sectsty}
 \usepackage{chngcntr}
 \usepackage{etoolbox}
-\usepackage{hyperref}       % Package untuk link di daftar isi.
 \usepackage{titlesec}       % Package Format judul
 \usepackage{parskip}
 \usepackage{csvsimple}
+\usepackage[hidelinks]{hyperref}       % Package untuk link di daftar isi.
 
 % Line satu setengah spasi
 \renewcommand{\baselinestretch}{1.5}
