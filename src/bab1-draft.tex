@@ -1,0 +1,24 @@
+% Draf peninjauan BAB I: sampul, daftar isi, naskah, dan pustaka.
+\documentclass[12pt,a4paper,onecolumn,oneside,final]{report}
+
+\input{config/if-itb-thesis.sty}
+\input{config/thesis-metadata}
+\bibliography{references}
+
+\begin{document}
+    \pagenumbering{gobble}
+    \input{chapters/cover}
+
+    \pagestyle{plain}
+    \pagenumbering{roman}
+    \tableofcontents
+    \clearpage
+
+    \pagenumbering{arabic}
+    \renewcommand{\chaptername}{BAB}
+    \renewcommand{\thechapter}{\Roman{chapter}}
+    \titleformat*{\section}{\bfseries\Large}
+    \input{chapters/chapter-1}
+
+    \printbibliography[heading=bibintoc]
+\end{document}
