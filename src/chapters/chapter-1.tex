@@ -1,62 +1,111 @@
 %--------------------------------------------------------------------%
-%
 % Bab I — Pendahuluan
-%
 % @author Refki Alfarizi
-%
-%--------------------------------------------------------------------%
-%
-% Berisi latar belakang, rumusan masalah, tujuan, batasan, metodologi,
-% dan sistematika pembahasan. Ganti teks placeholder dengan isi
-% sebenarnya.
-%
 %--------------------------------------------------------------------%
 
 \chapter{Pendahuluan}
+\label{chap:pendahuluan}
 
-Bab Pendahuluan secara umum yang dijadikan landasan kerja dan arah kerja penulis tugas akhir, berfungsi mengantar pembaca untuk membaca laporan tugas akhir secara keseluruhan.
+% Hindari satu baris pembuka paragraf yang terpisah di akhir halaman.
+\begingroup
+\clubpenalty=10000
+\widowpenalty=10000
+\makeatletter
+\@clubpenalty=10000
+\makeatother
+
+Konten pada bab ini berisi gambaran umum dan permasalahan yang akan diselesaikan dalam tugas akhir ini. Bab ini dimulai dari penjelasan latar belakang masalah, rumusan masalah, tujuan, batasan masalah, dan diakhiri dengan metodologi pelaksanaan tugas akhir ini.
 
 \section{Latar Belakang}
+\label{sec:latar-belakang}
 
-Latar Belakang berisi dasar pemikiran, kebutuhan atau alasan yang menjadi ide dari topik tugas akhir. Tujuan utamanya adalah untuk memberikan informasi secukupnya kepada pembaca agar memahami topik yang akan dibahas.  Saat menuliskan bagian ini, posisikan anda sebagai pembaca – apakah anda tertarik untuk terus membaca?
+Dalam pengembangan perangkat lunak, pengembang dapat memanfaatkan kembali kode yang telah tersedia untuk memenuhi kebutuhan fungsi yang serupa. Salah satu bentuk pemanfaatan kembali kode tersebut adalah penggunaan pustaka (\textit{library}). Pustaka menyediakan sekumpulan fungsi yang dapat digunakan oleh perangkat lunak lain sehingga pengembang tidak perlu membuat ulang fungsi yang sudah tersedia. Perangkat lunak yang menggunakan pustaka disebut klien. Sebagian fungsi klien bergantung pada kode yang disediakan oleh pustaka tersebut \parencite{Ochoa2023}.
 
-\blindtext
+Klien menggunakan fungsi pustaka melalui \textit{application programming interface} (API). Antarmuka ini menentukan fungsi yang dapat dipanggil dan cara memberikan masukan untuk menjalankan fungsi tersebut. Selain cara pemanggilan, pengembang klien juga mengandalkan ketentuan mengenai masukan yang diterima dan hasil yang akan diberikan pustaka. Ketentuan tersebut membentuk kontrak penggunaan API\@. Berdasarkan kontrak ini, pengembang dapat menulis kode klien untuk menggunakan fungsi pustaka tanpa harus mengetahui seluruh implementasi di dalam pustaka \parencite{Ochoa2023,LiskovWing1994}.
+
+Selama pengembangan dan pemeliharaan perangkat lunak, kebutuhan terhadap fungsi pustaka dapat berubah. Kesalahan pada implementasi juga mungkin baru ditemukan setelah pustaka digunakan. Perubahan kebutuhan dan temuan kesalahan tersebut menjadi alasan bagi pengembang pustaka untuk menyesuaikan implementasi, memperbaiki kesalahan, atau menambahkan fungsi. Hasil perubahan kemudian dapat dirilis sebagai versi yang diperbarui. Untuk memanfaatkan perbaikan atau fungsi baru itu, pengembang klien perlu mengganti versi pustaka yang sedang digunakan \parencite{Ochoa2023}.
+
+Penggantian versi perlu mempertimbangkan bahwa kode klien telah ditulis berdasarkan API dan kontrak dari versi pustaka yang sedang digunakan. Jika versi yang diperbarui tidak lagi menyediakan metode yang dipanggil klien, kode klien dapat gagal dikompilasi. Dalam kasus lain, kode klien masih dapat memanggil metode dengan nama dan masukan yang digunakan sebelumnya, tetapi hasil pemanggilan tidak lagi memenuhi kontrak penggunaan. Kedua keadaan tersebut membuat pustaka yang telah diperbarui tidak dapat langsung menggantikan versi sebelumnya untuk penggunaan yang semula didukung. Perubahan pustaka yang merusak kompatibilitas ini disebut \textit{breaking change} (BC) \parencite{Ochoa2023}.
+
+Pada kasus kedua tersebut, pemanggilan API masih dapat dilakukan, tetapi hasilnya tidak lagi memenuhi kontrak sebelumnya. Sebagai ilustrasi, suatu metode API menerima bilangan bulat yang menyatakan usia dalam tahun. Kontraknya menjamin nilai kembalian \texttt{true} jika usia minimal 18 tahun, sehingga masukan 20 harus menghasilkan \texttt{true}. Jika pembaruan menaikkan batas usia menjadi 21 tahun, pemanggilan dengan masukan 20 akan menghasilkan \texttt{false}. Klien masih menggunakan nama metode dan argumen yang sama, tetapi hasil pemanggilannya melanggar jaminan kontrak. Perubahan yang melanggar jaminan perilaku seperti ini disebut \textit{behavioral breaking change}, atau BC perilaku. Sebaliknya, perubahan implementasi yang tetap memenuhi jaminan kontrak tidak digolongkan sebagai BC perilaku \parencite{Ochoa2023,LiskovWing1994}.
+
+Perubahan tersebut dapat ditemukan melalui pengujian perangkat lunak dengan menjalankan program dan memeriksa hasilnya. Namun, hasil pengujian terbatas pada masukan dan kondisi yang dicakup kasus uji. Pada ilustrasi pemeriksaan usia, tes yang tidak memeriksa rentang usia 18--20 tahun dapat tetap lulus meskipun kontrak telah dilanggar. Dengan demikian, kelulusan kasus uji yang tersedia belum menjamin bahwa pembaruan pustaka tetap kompatibel.
+
+Selain melalui pelaksanaan kasus uji, dampak perubahan dapat diperiksa menggunakan analisis statis, yaitu pemeriksaan kode program tanpa menjalankannya. Analisis ini dapat menelusuri hubungan antara bagian kode yang berubah dan bagian lain yang berpotensi terdampak \parencite{Tip1995,RyderTip2001}. Tantangannya adalah membedakan perbedaan implementasi dari perubahan yang melanggar kontrak perilaku. Pada pendekatan yang membandingkan representasi kode, perubahan susunan perhitungan dapat terdeteksi sebagai perbedaan meskipun kedua implementasi memberikan hasil yang sama. Akibatnya, perubahan yang tetap kompatibel dapat keliru dilaporkan sebagai BC \parencite{Zhang2022Sembid}. Oleh karena itu, penilaian kompatibilitas perlu mempertimbangkan makna perubahan terhadap perilaku yang dijanjikan API\@.
+
+Salah satu teknologi yang dapat dimanfaatkan untuk membantu penafsiran kode adalah \textit{large language model} (LLM), yaitu model bahasa yang dilatih pada data teks berskala besar. Model mempelajari pola bahasa dari data pelatihan dan menggunakannya untuk menghasilkan respons berdasarkan instruksi serta informasi yang diberikan. Pada model yang juga dilatih menggunakan kode program, pola yang dipelajari mencakup hubungan antara implementasi dan deskripsi fungsi dalam bahasa alami \parencite{Chen2021Code}. Kemampuan ini memungkinkan model digunakan untuk menjelaskan operasi suatu potongan kode berdasarkan informasi yang diterimanya. Dalam analisis dampak perubahan kode pustaka, LLM dapat diminta membandingkan implementasi sebelum dan sesudah pembaruan, lalu menjelaskan kemungkinan perubahan hasil dan kondisi yang memicunya \parencite{Cheng2026BCaLLM}.
+
+Penilaian LLM tetap bergantung pada informasi yang diterimanya. Kode dan informasi pendukung yang diberikan kepada model disebut konteks. Jika kode yang memengaruhi hasil API tidak disertakan, model dapat menafsirkan perubahan secara keliru \parencite{Cheng2026BCaLLM}. Analisis statis berpotensi membantu penyusunan konteks dengan menelusuri kode yang berkaitan dengan perubahan dan dampaknya. Informasi tersebut kemudian dapat digunakan LLM untuk menelaah kemungkinan perubahan perilaku dan kesesuaiannya dengan kontrak yang tersedia. Namun, penyediaan konteks tersebut belum menjamin bahwa penilaian model akan benar.
+
+Berdasarkan kebutuhan tersebut, penelitian ini mengkaji integrasi analisis statis dan LLM untuk menganalisis dampak perubahan kode terhadap kompatibilitas perilaku pustaka. Analisis statis digunakan untuk menyediakan informasi hubungan antarkode sebagai konteks penilaian LLM\@. Melalui eksperimen, penelitian ini akan menelaah pengaruh informasi tersebut terhadap ketepatan deteksi BC perilaku, termasuk kondisi ketika konteks membantu penilaian maupun ketika model tetap menghasilkan kesalahan.
 
 \section{Rumusan Masalah}
+\label{sec:rumusan-masalah}
 
-Rumusan Masalah berisi masalah utama yang dibahas dalam tugas akhir. Rumusan masalah yang baik memiliki struktur sebagai berikut:
-
-\begin{enumerate}
-    \item Penjelasan ringkas tentang kondisi/situasi yang ada sekarang terkait dengan topik utama yang dibahas Tugas Akhir.
-    \item Pokok persoalan dari kondisi/situasi yang ada, dapat dilihat dari kelemahan atau kekurangannya. Bagian ini merupakan inti dari rumusan masalah.
-    \item Elaborasi lebih lanjut yang menekankan pentingnya untuk menyelesaikan pokok persoalan tersebut.
-    \item Usulan singkat terkait dengan solusi yang ditawarkan untuk menyelesaikan persoalan.
-\end{enumerate}
-
-Penting untuk diperhatikan bahwa persoalan yang dideskripsikan pada subbab ini akan dipertanggungjawabkan di bab Evaluasi apakah terselesaikan atau tidak.
-
-\blindtext
+Berdasarkan latar belakang yang sudah dijelaskan sebelumnya, penelitian ini berfokus pada analisis dampak perubahan kode terhadap kompatibilitas perangkat lunak. Persoalan yang dikaji adalah membedakan perubahan perilaku yang melanggar kontrak penggunaan dari perubahan implementasi yang tetap kompatibel. Oleh karena itu, rumusan masalah penelitian ini adalah bagaimana integrasi analisis statis dan LLM memengaruhi ketepatan deteksi BC perilaku.
 
 \section{Tujuan}
+\label{sec:tujuan}
 
-Tuliskan tujuan utama dan/atau tujuan detil yang akan dicapai dalam pelaksanaan tugas akhir. Fokuskan pada hasil akhir yang ingin diperoleh setelah tugas akhir diselesaikan, terkait dengan penyelesaian persoalan pada rumusan masalah. Penting untuk diperhatikan bahwa tujuan yang dideskripsikan pada subbab ini akan dipertanggungjawabkan di akhir pelaksanaan tugas akhir apakah tercapai atau tidak.
+\begingroup
+\clubpenalty=10000
+\widowpenalty=10000
+Tujuan yang akan dicapai dalam tugas akhir ini adalah menentukan pengaruh integrasi analisis statis dan LLM terhadap ketepatan deteksi BC perilaku. Ketepatan deteksi diukur dari proporsi kasus BC yang berhasil ditemukan dan proporsi peringatan yang benar, dengan LLM tanpa konteks hasil analisis statis sebagai pembanding. Hasil penelitian ini diharapkan dapat menjadi acuan dalam memilih strategi penyusunan konteks yang membantu LLM mendeteksi BC perilaku secara lebih tepat.
 
-\blindtext
+\par
+\endgroup
 
 \section{Batasan Masalah}
+\label{sec:batasan-masalah}
 
-Tuliskan batasan-batasan yang diambil dalam pelaksanaan tugas akhir. Batasan ini dapat dihindari (tidak perlu ada) jika topik/judul tugas akhir dibuat cukup spesifik.
+Terdapat batasan yang diambil dalam pelaksanaan tugas akhir ini, yaitu sebagai berikut.
 
-\blindtext
+\begin{enumerate}
+    \begin{samepage}
+    \item Penelitian dilakukan pada metode publik dalam API pustaka Java. Metode pada versi setelah pembaruan masih dapat dipanggil menggunakan bentuk pemanggilan yang sah pada versi sebelumnya.
+    \par
+    \end{samepage}
+    \begin{samepage}
+    \item Perilaku yang diperiksa mencakup nilai kembalian, eksepsi, serta perubahan keadaan program yang dapat diamati melalui API\@.
+    \par
+    \end{samepage}
+    \begin{samepage}
+    \item Dampak perubahan dikaji pada tingkat API pustaka. Dasar penilaian kompatibilitas adalah kontrak API bagi penggunaan yang sebelumnya didukung.
+    \par
+    \end{samepage}
+\end{enumerate}
 
 \section{Metodologi}
+\label{sec:metodologi}
 
-Tuliskan semua tahapan yang akan dilalui selama pelaksanaan tugas akhir. Tahapan ini spesifik untuk menyelesaikan persoalan tugas akhir. Tahapan studi literatur tidak perlu dituliskan karena ini adalah pekerjaan yang harus Anda lakukan selama proses pelaksanaan tugas akhir.
+Terdapat beberapa metodologi yang digunakan untuk melaksanakan tugas akhir ini, berikut adalah tahapan pelaksanaannya:
 
-\blindtext
+\begin{enumerate}
+    \widowpenalty=10000
+    \item \textbf{Identifikasi Permasalahan}
 
-\section{Sistematika Pembahasan}
+    \nopagebreak
+    Contoh perubahan kode pustaka ditelaah untuk mengidentifikasi perubahan perilaku yang dapat melanggar kontrak API\@. Hasil penelaahan digunakan untuk menetapkan kriteria kompatibilitas dan kebutuhan informasi bagi penilaian LLM\@.
 
-Subbab ini berisi penjelasan ringkas isi per bab. Penjelasan ditulis satu paragraf per bab buku.
+    \item \textbf{Perancangan Eksperimen}
 
-\blindtext
+    \nopagebreak
+    Berdasarkan hasil identifikasi, dirancang eksperimen untuk membandingkan penilaian LLM dengan dan tanpa konteks hasil analisis statis. Data evaluasi mencakup kasus BC perilaku dan kasus kompatibel dari dataset penelitian terdahulu. Label acuannya ditelaah melalui keterangan dataset dan bukti pendukung yang tersedia, seperti dokumentasi API, tes, atau catatan perubahan. Perbandingan menggunakan model dan kumpulan kasus yang sama.
+
+    \item \textbf{Implementasi Pendekatan}
+
+    \nopagebreak
+    Dari rancangan tersebut, dikembangkan pendekatan yang menggunakan analisis statis untuk menelusuri kode yang berkaitan dengan perubahan dan menyusun konteks bagi LLM\@. Model menerima konteks tersebut untuk memprediksi BC perilaku dan menjelaskan alasannya. Hasil tahap ini berupa implementasi yang dapat digunakan untuk menjalankan eksperimen.
+
+    \item \textbf{Eksperimen dan Pengujian}
+
+    \nopagebreak
+    Setelah implementasi selesai, eksperimen dijalankan sesuai rancangan untuk memperoleh prediksi kompatibilitas pada setiap strategi konteks. Prediksi, alasan model, dan konteks masukan dicatat sebagai data untuk evaluasi.
+
+    \item \textbf{Analisis dan Evaluasi}
+
+    \nopagebreak
+    Data hasil eksperimen dibandingkan dengan label acuan untuk menghitung \textit{precision}, \textit{recall}, dan F1. Kasus yang salah diklasifikasikan ditelaah untuk mengidentifikasi kemungkinan penyebabnya. Hasil analisis digunakan untuk menyimpulkan pengaruh konteks hasil analisis statis terhadap ketepatan deteksi BC perilaku serta keterbatasan pendekatan.
+\end{enumerate}
+
+\endgroup
