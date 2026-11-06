@@ -1,4 +1,4 @@
-.PHONY: all build build-bab2 clean validate check-deps
+.PHONY: all build build-bab1 build-bab2 build-bab1-bab2 clean validate check-deps
 
 all: clean build
 
@@ -16,10 +16,20 @@ build: check-deps
 	latexmk -pdf -bibtex -outdir=../build -cd src/thesis.tex
 	mv build/thesis.pdf dist
 
+build-bab1: check-deps
+	mkdir -p dist build/bab1-draft
+	latexmk -pdf -bibtex -outdir=../build/bab1-draft -cd src/bab1-draft.tex
+	cp build/bab1-draft/bab1-draft.pdf dist/bab1-draft.pdf
+
 build-bab2: check-deps
 	mkdir -p dist build/bab2-draft
 	latexmk -pdf -bibtex -outdir=../build/bab2-draft -cd src/bab2-draft.tex
 	cp build/bab2-draft/bab2-draft.pdf dist/bab2-draft.pdf
+
+build-bab1-bab2: check-deps
+	mkdir -p dist build/bab1-bab2-draft
+	latexmk -pdf -bibtex -outdir=../build/bab1-bab2-draft -cd src/bab1-bab2-draft.tex
+	cp build/bab1-bab2-draft/bab1-bab2-draft.pdf dist/bab1-bab2-draft.pdf
 
 validate:
 	find src -name '*.tex' -print0 | xargs -0 chktex -l .chktexrc
